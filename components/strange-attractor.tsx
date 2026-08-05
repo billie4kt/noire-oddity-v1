@@ -1,47 +1,53 @@
 "use client"
 
-import { useRef, useMemo, useState, useEffect } from "react"
+import { useRef, useMemo, useState } from "react"
 import { useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
-function generateParticleFabric(numPoints: number) {
+function generateLorenzAttractor(numPoints: number) {
   const points: number[] = []
-  const rng = (seed: number) => {
-    const x = Math.sin(seed) * 10000
-    return x - Math.floor(x)
+
+  // Lorenz attractor parameters
+  const sigma = 10
+  const rho = 28
+  const beta = 8 / 3
+  const dt = 0.005 // time step
+
+  // Initial conditions
+  let x = 0.1
+  let y = 0
+  let z = 0
+
+  const scale = 0.08 // Scale down the attractor for better viewing
+
+  for (let i = 0; i < numPoints; i++) {
+    // Store current position
+    points.push(x * scale, y * scale, z * scale)
+
+    // Calculate derivatives (Lorenz equations)
+    const dx = sigma * (y - x)
+    const dy = x * (rho - z) - y
+    const dz = x * y - beta * z
+
+    // Update position using Euler method
+    x += dx * dt
+    y += dy * dt
+    z += dz * dt
   }
 
-  // Create an evenly distributed point cloud with gentle organic variation
-  const gridSize = Math.ceil(Math.cbrt(numPoints))
-  const spacing = 8 / gridSize
-
-  for (let i = 0; i < gridSize; i++) {
-    for (let j = 0; j < gridSize; j++) {
-      for (let k = 0; k < gridSize; k++) {
-        if (points.length / 3 >= numPoints) break
-
-        const x = -4 + i * spacing + rng(i * 100 + j * 10 + k) * 0.3
-        const y = -4 + j * spacing + rng(i * 50 + j * 200 + k * 30) * 0.3
-        const z = -4 + k * spacing + rng(i * 150 + j * 75 + k * 200) * 0.3
-
-        points.push(x, y, z)
-      }
-    }
-  }
-
-  return new Float32Array(points.slice(0, numPoints * 3))
+  return new Float32Array(points)
 }
 
 export function StrangeAttractor() {
   const pointsRef = useRef<THREE.Points>(null)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
-  const [mouse3D, setMouse3D] = useState(new THREE.Vector3(0, 0, 0))
-  const [showLogo, setShowLogo] = useState(false)
-  const { camera, size } = useThree()
+  const [mouse3D, setMouse3D] = useState(new THREE.Vector3(0, 0, -10))
+  const { camera } = useThree()
 
   const { positions, count } = useMemo(() => {
-    const positions = generateParticleFabric(250000)
+    const positions = generateLorenzAttractor(100000)
     const count = positions.length / 3
+
     return { positions, count }
   }, [])
 
@@ -51,115 +57,172 @@ export function StrangeAttractor() {
       new THREE.ShaderMaterial({
         uniforms: {
           uTime: { value: 0 },
-          uMouse: { value: new THREE.Vector3(0, 0, 0) },
-          uMouseStrength: { value: 1.5 },
-          uCameraPosition: { value: camera.position.clone() },
+          uMouse: { value: new THREE.Vector3(0, 0, -10) },
+          uMagnetStrength: { value: 0.9 },
+          uCameraPosition: { value: new THREE.Vector3(0, 0, 5) },
         },
         vertexShader: `
           uniform float uTime;
           uniform vec3 uMouse;
-          uniform float uMouseStrength;
+          uniform float uMagnetStrength;
           uniform vec3 uCameraPosition;
+          varying float vDistanceFromCenter;
+          varying float vMouseInfluence;
+          varying vec3 vWorldPosition;
+          varying vec3 vNormal;
+          varying float vDepth;
           
-          varying float vAlpha;
-          varying float vMouseDist;
+          mat3 rotateY(float angle) {
+            float c = cos(angle);
+            float s = sin(angle);
+            return mat3(
+              c, 0.0, s,
+              0.0, 1.0, 0.0,
+              -s, 0.0, c
+            );
+          }
           
           void main() {
             vec3 pos = position;
-            vec3 initialPos = pos;
             
-            // Slow breathing motion
-            float breathe = sin(uTime * 0.3) * 0.15;
-            pos += normalize(pos) * breathe;
+            vec3 spiralCenter1 = vec3(0.8, 0.0, 0.8);  // Right lobe
+            vec3 spiralCenter2 = vec3(-0.8, 0.0, 0.8); // Left lobe
             
-            // Subtle drift
-            float driftX = sin(uTime * 0.15 + pos.y * 0.5) * 0.08;
-            float driftY = cos(uTime * 0.12 + pos.x * 0.3) * 0.08;
-            float driftZ = sin(uTime * 0.18 + pos.z * 0.4) * 0.06;
-            pos += vec3(driftX, driftY, driftZ);
+            float dist1 = length(pos - spiralCenter1);
+            float dist2 = length(pos - spiralCenter2);
             
-            // Mouse gravity interaction - particles orbit around cursor
-            vec3 toMouse = uMouse - pos;
-            float distToMouse = length(toMouse);
-            float mouseInfluence = smoothstep(4.0, 0.2, distToMouse);
-            mouseInfluence = pow(mouseInfluence, 1.2);
+            vec3 closestCenter = dist1 < dist2 ? spiralCenter1 : spiralCenter2;
+            float spiralDist = min(dist1, dist2);
             
-            // Orbital motion around mouse
-            if (distToMouse > 0.01) {
-              vec3 mouseNormal = normalize(toMouse);
-              vec3 tangent = normalize(cross(mouseNormal, vec3(0.0, 1.0, 0.0)));
-              if (length(tangent) < 0.1) tangent = vec3(1.0, 0.0, 0.0);
-              vec3 binormal = cross(mouseNormal, tangent);
-              
-              float orbitSpeed = uTime * 2.0 - distToMouse * 3.0;
-              float orbitRadius = distToMouse * 0.4;
-              
-              pos += (cos(orbitSpeed) * tangent + sin(orbitSpeed) * binormal) * orbitRadius * mouseInfluence * uMouseStrength;
-              pos += mouseNormal * mouseInfluence * 0.3;
+            float spiralInfluence = smoothstep(2.5, 0.0, spiralDist);
+            float spiralSpeed = spiralInfluence * 0.8;
+            
+            float angle = atan(pos.x - closestCenter.x, pos.z - closestCenter.z);
+            float heightPhase = (pos.y - closestCenter.y) * 0.5;
+            float spiralPhase = angle * 0.3 + heightPhase;
+            
+            vec3 offsetFromCenter = pos - closestCenter;
+            float rotationAngle = uTime * spiralSpeed + spiralPhase;
+            
+            if (dist1 < dist2) {
+              rotationAngle *= 1.0;
+            } else {
+              rotationAngle *= -1.0;
             }
             
-            // Ripple effect from mouse
-            float ripple = sin(distToMouse * 8.0 - uTime * 4.0) * mouseInfluence * 0.2;
-            vec3 rippleDir = normalize(uMouse - initialPos);
-            pos += rippleDir * ripple;
+            offsetFromCenter = rotateY(rotationAngle * 0.15) * offsetFromCenter;
+            pos = closestCenter + offsetFromCenter;
             
-            // Distance-based density and depth sorting
+            vec3 toCenter = -normalize(pos);
             float distFromOrigin = length(pos);
-            vAlpha = smoothstep(8.0, 0.0, distFromOrigin);
-            vMouseDist = distToMouse;
+            float gravityStrength = smoothstep(3.0, 0.3, distFromOrigin);
+            float gravityPull = sin(uTime * 0.5 + distFromOrigin * 2.0) * gravityStrength * 0.08;
+            pos += toCenter * gravityPull;
+            
+            float streamEffect = sin(uTime * 2.0 - distFromOrigin * 8.0) * gravityStrength * 0.025;
+            pos += toCenter * streamEffect;
+            
+            float distFromCenter = length(pos);
+            vDistanceFromCenter = smoothstep(6.0, 0.0, distFromCenter);
+            
+            vec3 worldPos = (modelMatrix * vec4(pos, 1.0)).xyz;
+            vWorldPosition = worldPos;
+            vNormal = normalize((modelMatrix * vec4(normalize(pos), 0.0)).xyz);
+            
+            float depthFromCamera = length(uCameraPosition - worldPos);
+            vDepth = depthFromCamera;
+            
+            float distToMouse = length(worldPos - uMouse);
+            float magneticInfluence = smoothstep(3.0, 0.0, distToMouse);
+            magneticInfluence = pow(magneticInfluence, 0.7);
+            vMouseInfluence = magneticInfluence;
+            
+            vec3 direction = normalize(uMouse - worldPos);
+            vec3 perpendicular = cross(direction, vec3(0.0, 0.0, 1.0));
+            pos += direction * magneticInfluence * uMagnetStrength;
+            pos += perpendicular * magneticInfluence * 0.5 * sin(uTime * 2.0 + length(worldPos) * 3.0);
+            
+            float wave = sin(distToMouse * 5.0 - uTime * 3.0) * magneticInfluence * 0.2;
+            pos += direction * wave;
             
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
             
-            // Size based on depth and mouse proximity
-            float depthSize = smoothstep(15.0, 2.0, length(uCameraPosition - (modelMatrix * vec4(pos, 1.0)).xyz));
-            float mouseSize = mouseInfluence * 1.5;
-            gl_PointSize = 0.8 + depthSize * 1.2 + mouseSize;
+            float depthSize = smoothstep(12.0, 4.0, depthFromCamera);
+            gl_PointSize = 0.5 + depthSize * 1.5 + magneticInfluence * 0.5;
           }
         `,
         fragmentShader: `
-          varying float vAlpha;
-          varying float vMouseDist;
+          uniform float uTime;
+          varying float vDistanceFromCenter;
+          varying float vMouseInfluence;
+          varying vec3 vWorldPosition;
+          varying vec3 vNormal;
+          varying float vDepth;
+          
+          vec3 getIridescentColor(vec3 worldPos, vec3 normal, float time) {
+            float angle = atan(worldPos.y, worldPos.x);
+            float height = worldPos.z;
+            float radius = length(worldPos.xy);
+            
+            float colorShift = angle * 0.8 + height * 0.5 + time * 0.15;
+            float colorShift2 = radius * 1.2 - time * 0.1;
+            float colorShift3 = (worldPos.x + worldPos.y) * 0.7 + time * 0.08;
+            
+            vec3 color1 = vec3(0.12, 0.3, 0.5);   // deeper, more muted blue
+            vec3 color2 = vec3(0.3, 0.12, 0.45);  // deeper, more muted purple
+            vec3 color3 = vec3(0.45, 0.15, 0.3);  // more muted magenta
+            vec3 color4 = vec3(0.12, 0.35, 0.4);  // deeper, more muted cyan
+            vec3 color5 = vec3(0.35, 0.15, 0.35); // more muted violet
+            
+            vec3 iridescent = mix(color1, color2, sin(colorShift) * 0.5 + 0.5);
+            iridescent = mix(iridescent, color3, cos(colorShift * 1.3) * 0.5 + 0.5);
+            iridescent = mix(iridescent, color4, sin(colorShift2 * 0.8) * 0.5 + 0.5);
+            iridescent = mix(iridescent, color5, cos(colorShift3 * 1.1) * 0.5 + 0.5);
+            
+            iridescent *= 0.75;
+            
+            return iridescent;
+          }
           
           void main() {
             vec2 center = gl_PointCoord - 0.5;
             float dist = length(center);
-            
             if (dist > 0.5) discard;
             
-            // Soft circle with glow
-            float alpha = (1.0 - dist * dist) * vAlpha;
+            float depthFade = smoothstep(14.0, 4.0, vDepth);
+            depthFade = pow(depthFade, 1.5);
             
-            // Subtle glow around particles
-            float glow = smoothstep(0.5, 0.0, dist) * 0.3;
-            alpha = mix(alpha, 1.0, glow * 0.4);
+            float alpha = smoothstep(0.0, 0.8, vDistanceFromCenter);
+            alpha = mix(alpha, 1.0, vMouseInfluence * 0.4);
             
-            // Very subtle lavender tint on mouse proximity
-            float lavenderTint = smoothstep(2.0, 0.0, vMouseDist) * 0.08;
+            alpha *= depthFade * 0.4 + 0.15;
             
-            vec3 color = mix(vec3(1.0), vec3(0.95, 0.93, 1.0), lavenderTint);
+            vec3 iridescent = getIridescentColor(vWorldPosition, vNormal, uTime);
             
-            gl_FragColor = vec4(color, alpha);
+            float depthIntensity = smoothstep(12.0, 4.0, vDepth);
+            
+            vec3 finalColor = mix(vec3(0.8), iridescent, 0.25 + depthIntensity * 0.15);
+            
+            finalColor *= 1.0 + vMouseInfluence * 0.1;
+            
+            gl_FragColor = vec4(finalColor, alpha);
           }
         `,
         transparent: true,
         depthWrite: false,
-        blending: THREE.NormalBlending,
+        blending: THREE.AdditiveBlending,
       }),
-    [camera],
+    [],
   )
 
   const handlePointerMove = (event: any) => {
     if (!pointsRef.current) return
 
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = (event.clientX - rect.left) / rect.width * 2 - 1
-    const y = -(event.clientY - rect.top) / rect.height * 2 + 1
-
     const raycaster = new THREE.Raycaster()
-    raycaster.setFromCamera(new THREE.Vector2(x, y), camera)
+    raycaster.setFromCamera(event.pointer, camera)
 
-    const planeZ = 0
+    const planeZ = pointsRef.current.position.z
     const planeNormal = new THREE.Vector3(0, 0, 1)
     const planePoint = new THREE.Vector3(0, 0, planeZ)
     const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(planeNormal, planePoint)
@@ -173,27 +236,18 @@ export function StrangeAttractor() {
   }
 
   useFrame((state) => {
-    if (materialRef.current) {
+    if (pointsRef.current && materialRef.current) {
+      pointsRef.current.rotation.y += 0.001
+      pointsRef.current.rotation.x += 0.0003
+
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime
       materialRef.current.uniforms.uMouse.value.copy(mouse3D)
       materialRef.current.uniforms.uCameraPosition.value.copy(state.camera.position)
-
-      // Very subtle camera drift
-      const driftX = Math.sin(state.clock.elapsedTime * 0.08) * 0.5
-      const driftY = Math.cos(state.clock.elapsedTime * 0.06) * 0.3
-      state.camera.position.x = driftX
-      state.camera.position.y = driftY
-      state.camera.position.z = 5
-    }
-
-    // Trigger logo reveal after 1.5s
-    if (state.clock.elapsedTime > 1.5 && !showLogo) {
-      setShowLogo(true)
     }
   })
 
   return (
-    <points ref={pointsRef} onPointerMove={handlePointerMove} position={[0, 0, 0]}>
+    <points ref={pointsRef} onPointerMove={handlePointerMove}>
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
       </bufferGeometry>
