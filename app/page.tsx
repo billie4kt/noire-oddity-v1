@@ -2,7 +2,7 @@
 
 import { ParticleBackground } from "@/components/particle-background"
 import { Navigation } from "@/components/navigation"
-import { ParticleTile } from "@/components/particle-tile"
+import { ProjectTile } from "@/components/project-tile"
 import { useState, useEffect } from "react"
 
 export default function Page() {
@@ -162,30 +162,34 @@ export default function Page() {
               {
                 title: "Quantum Interface",
                 category: "Digital Product",
-                description: "Revolutionary platform for real-time data visualization"
+                description: "Revolutionary platform for real-time data visualization",
+                image: "/projects/quantum-interface.png"
               },
               {
                 title: "Luminescence",
                 category: "Brand Identity",
-                description: "Luxury fashion identity system with dynamic visuals"
+                description: "Luxury fashion identity system with dynamic visuals",
+                image: "/projects/luminescence.png"
               },
               {
                 title: "Nexus Protocol",
                 category: "Interactive Experience",
-                description: "Immersive 3D environment for architectural viz"
+                description: "Immersive 3D environment for architectural viz",
+                image: "/projects/nexus-protocol.png"
               },
               {
                 title: "Chromatic Motion",
                 category: "Motion Design",
-                description: "Award-winning animation for streaming platform"
+                description: "Award-winning animation for streaming platform",
+                image: "/projects/chromatic-motion.png"
               }
             ].map((project, idx) => (
-              <ParticleTile
+              <ProjectTile
                 key={idx}
                 title={project.title}
                 category={project.category}
                 description={project.description}
-                index={idx}
+                image={project.image}
               />
             ))}
           </div>

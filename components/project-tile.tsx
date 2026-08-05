@@ -1,34 +1,25 @@
-"use client"
-
-import { Canvas } from "@react-three/fiber"
-import { StrangeAttractor } from "@/components/strange-attractor"
-
-interface ParticleTileProps {
+interface ProjectTileProps {
   title: string
   category: string
   description: string
-  index: number
+  image: string
 }
 
-export function ParticleTile({ title, category, description, index }: ParticleTileProps) {
+export function ProjectTile({ title, category, description, image }: ProjectTileProps) {
   return (
     <div className="relative group overflow-hidden rounded-lg aspect-square">
-      {/* Particle background */}
-      <div className="absolute inset-0 z-0 opacity-85">
-        <Canvas 
-          camera={{ position: [0, 0, 5], fov: 45 }} 
-          gl={{ antialias: true, alpha: true }}
-          style={{ background: 'transparent' }}
-        >
-          <StrangeAttractor />
-        </Canvas>
-      </div>
+      {/* Background image */}
+      <img 
+        src={image} 
+        alt={title}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
       {/* Overlay with gradient */}
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/15 via-black/40 to-black/85" />
 
       {/* Content */}
-      <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 transition-all duration-300 group-hover:from-black/25 group-hover:via-black/50 group-hover:to-black/90">
+      <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 transition-all duration-300">
         <div className="mb-2">
           <span className="inline-block px-3 py-1 text-xs tracking-widest uppercase text-white/70 border border-white/30 group-hover:border-white/80 transition-colors">
             {category}
