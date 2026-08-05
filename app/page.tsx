@@ -2,6 +2,7 @@
 
 import { ParticleBackground } from "@/components/particle-background"
 import { Navigation } from "@/components/navigation"
+import { ParticleTile } from "@/components/particle-tile"
 import { useState, useEffect } from "react"
 
 export default function Page() {
@@ -28,7 +29,7 @@ export default function Page() {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative w-full h-screen flex items-center justify-center">
+      <section className="relative w-full h-screen flex items-center justify-center bg-black/15">
         {/* Hero Content */}
         <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
           {showLogo && (
@@ -56,7 +57,7 @@ export default function Page() {
       </section>
 
       {/* Section 2: Design Philosophy */}
-      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/15 backdrop-blur-md py-24 px-8">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div 
@@ -86,7 +87,7 @@ export default function Page() {
       </section>
 
       {/* Section 3: Capabilities */}
-      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/25 backdrop-blur-xl py-24 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 
             style={{ transform: `translateY(${scrollY * 0.25}px)` }}
@@ -121,7 +122,7 @@ export default function Page() {
       </section>
 
       {/* Section 4: Industries */}
-      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/35 backdrop-blur-2xl py-24 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 
             style={{ transform: `translateY(${scrollY * 0.25}px)` }}
@@ -148,7 +149,7 @@ export default function Page() {
       </section>
 
       {/* Section 5: Work */}
-      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/45 backdrop-blur-3xl py-24 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 
             style={{ transform: `translateY(${scrollY * 0.25}px)` }}
@@ -157,22 +158,42 @@ export default function Page() {
             Selected Work
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="aspect-square bg-neutral-900/60 hover:bg-neutral-800 transition-colors cursor-pointer flex items-center justify-center group">
-                <div className="text-center">
-                  <div className="text-5xl font-black opacity-20 group-hover:opacity-40 transition-opacity">
-                    {item}
-                  </div>
-                  <p className="text-sm text-neutral-500 mt-4">Project {item}</p>
-                </div>
-              </div>
+            {[
+              {
+                title: "Quantum Interface",
+                category: "Digital Product",
+                description: "Revolutionary platform for real-time data visualization"
+              },
+              {
+                title: "Luminescence",
+                category: "Brand Identity",
+                description: "Luxury fashion identity system with dynamic visuals"
+              },
+              {
+                title: "Nexus Protocol",
+                category: "Interactive Experience",
+                description: "Immersive 3D environment for architectural viz"
+              },
+              {
+                title: "Chromatic Motion",
+                category: "Motion Design",
+                description: "Award-winning animation for streaming platform"
+              }
+            ].map((project, idx) => (
+              <ParticleTile
+                key={idx}
+                title={project.title}
+                category={project.category}
+                description={project.description}
+                index={idx}
+              />
             ))}
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-20 bg-black/80 backdrop-blur-sm border-t border-neutral-800 py-16 px-8">
+      <footer className="relative z-20 bg-black/85 backdrop-blur-sm border-t border-neutral-800 py-16 px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div>

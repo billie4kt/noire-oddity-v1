@@ -22,7 +22,7 @@ export default function JournalPage() {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative z-10 w-full h-screen flex items-center justify-center">
+      <section className="relative z-10 w-full h-screen flex items-center justify-center bg-black/15">
         <div className="text-center max-w-4xl mx-auto px-6 mt-20">
           <h1 
             style={{ transform: `translateY(${scrollY * 0.5}px)` }}
@@ -40,7 +40,7 @@ export default function JournalPage() {
       </section>
 
       {/* Articles Grid */}
-      <section className="relative z-20 bg-black/80 backdrop-blur-sm py-24 px-8">
+      <section className="relative z-20 bg-black/35 backdrop-blur-2xl py-24 px-8">
         <div className="max-w-4xl mx-auto">
           <div className="space-y-16">
             {[
@@ -125,7 +125,7 @@ export default function JournalPage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="relative z-20 bg-black/80 backdrop-blur-sm py-24 px-8">
+      <section className="relative z-20 bg-black/45 backdrop-blur-3xl py-24 px-8">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-4xl font-black tracking-tight mb-4">Stay Updated</h2>
           <p className="text-neutral-400 mb-8">
@@ -148,7 +148,7 @@ export default function JournalPage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-20 bg-black/80 backdrop-blur-sm border-t border-neutral-800 py-12 px-8">
+      <footer className="relative z-20 bg-black/85 backdrop-blur-sm border-t border-neutral-800 py-12 px-8">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-xs text-neutral-600 tracking-widest">© 2024 NOIRE. All rights reserved.</p>
         </div>

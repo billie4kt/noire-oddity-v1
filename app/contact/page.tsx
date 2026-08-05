@@ -41,7 +41,7 @@ export default function ContactPage() {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative z-10 w-full h-screen flex items-center justify-center">
+      <section className="relative z-10 w-full h-screen flex items-center justify-center bg-black/15">
         <div className="text-center max-w-4xl mx-auto px-6 mt-20">
           <h1 
             style={{ transform: `translateY(${scrollY * 0.5}px)` }}
@@ -59,7 +59,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="relative z-20 bg-black/80 backdrop-blur-sm py-24 px-8">
+      <section className="relative z-20 bg-black/35 backdrop-blur-2xl py-24 px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
           {/* Contact Info */}
           <div 
@@ -188,7 +188,7 @@ export default function ContactPage() {
       </section>
 
       {/* Additional Info */}
-      <section className="relative z-20 bg-black/80 backdrop-blur-sm py-24 px-8 border-t border-neutral-800">
+      <section className="relative z-20 bg-black/45 backdrop-blur-3xl py-24 px-8 border-t border-neutral-800">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
@@ -214,7 +214,7 @@ export default function ContactPage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-20 bg-black/80 backdrop-blur-sm border-t border-neutral-800 py-12 px-8">
+      <footer className="relative z-20 bg-black/85 backdrop-blur-sm border-t border-neutral-800 py-12 px-8">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-xs text-neutral-600 tracking-widest">© 2024 NOIRE. All rights reserved.</p>
         </div>
