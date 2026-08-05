@@ -1,7 +1,7 @@
 "use client"
 
-import { Canvas } from "@react-three/fiber"
-import { StrangeAttractor } from "@/components/strange-attractor"
+import { ParticleBackground } from "@/components/particle-background"
+import { Navigation } from "@/components/navigation"
 import { useState, useEffect } from "react"
 
 export default function Page() {
@@ -21,35 +21,21 @@ export default function Page() {
 
   return (
     <div className="w-full bg-black text-white overflow-x-hidden">
+      {/* Fixed Particle Background */}
+      <ParticleBackground />
+      
+      {/* Navigation */}
+      <Navigation />
+
       {/* Hero Section */}
       <section className="relative w-full h-screen flex items-center justify-center">
-        {/* Particle Fabric Background */}
-        <div className="absolute inset-0 z-0">
-          <Canvas 
-            camera={{ position: [0, 0, 5], fov: 45 }} 
-            gl={{ antialias: true, alpha: true }}
-            style={{ background: 'transparent' }}
-          >
-            <StrangeAttractor />
-          </Canvas>
-        </div>
-
-        {/* Navigation */}
-        <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-6">
-          <div className="text-lg font-bold tracking-widest">NOIRE</div>
-          <div className="flex gap-8 text-sm tracking-wide">
-            <a href="#work" className="opacity-70 hover:opacity-100 transition-opacity">Work</a>
-            <a href="#studio" className="opacity-70 hover:opacity-100 transition-opacity">Studio</a>
-            <a href="#journal" className="opacity-70 hover:opacity-100 transition-opacity">Journal</a>
-            <a href="#contact" className="opacity-70 hover:opacity-100 transition-opacity">Contact</a>
-          </div>
-        </nav>
-
         {/* Hero Content */}
         <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
-          {/* Logo with pixel reveal animation */}
           {showLogo && (
-            <div className="mb-12 animate-in fade-in duration-1000">
+            <div 
+              className="mb-12 animate-in fade-in duration-1000"
+              style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+            >
               <h1 className="text-7xl md:text-8xl font-black tracking-[0.3em] mb-8">
                 NOIRE
               </h1>
@@ -70,15 +56,21 @@ export default function Page() {
       </section>
 
       {/* Section 2: Design Philosophy */}
-      <section id="studio" className="relative min-h-screen bg-black py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div>
+            <div 
+              style={{ transform: `translateY(${scrollY * 0.3}px)` }}
+              className="transition-transform"
+            >
               <h2 className="text-5xl md:text-6xl font-black tracking-tight mb-8 leading-tight">
                 We design<br />things people<br />remember
               </h2>
             </div>
-            <div className="text-neutral-400 space-y-6 text-lg leading-relaxed">
+            <div 
+              style={{ transform: `translateY(${scrollY * -0.2}px)` }}
+              className="text-neutral-400 space-y-6 text-lg leading-relaxed transition-transform"
+            >
               <p>
                 At NOIRE, we believe the most powerful design isn&apos;t just seen—it&apos;s felt. 
                 Every project we create emerges from a deep understanding of culture, motion, and 
@@ -94,9 +86,14 @@ export default function Page() {
       </section>
 
       {/* Section 3: Capabilities */}
-      <section className="relative min-h-screen bg-black py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-black tracking-tight mb-20 uppercase">Capabilities</h2>
+          <h2 
+            style={{ transform: `translateY(${scrollY * 0.25}px)` }}
+            className="text-4xl font-black tracking-tight mb-20 uppercase transition-transform"
+          >
+            Capabilities
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
             {[
               "Brand Systems",
@@ -107,8 +104,12 @@ export default function Page() {
               "3D & Spatial",
               "AI Integration",
               "Emerging Tech"
-            ].map((capability) => (
-              <div key={capability} className="group cursor-pointer">
+            ].map((capability, idx) => (
+              <div 
+                key={capability} 
+                className="group cursor-pointer"
+                style={{ transform: `translateY(${scrollY * (0.1 + idx * 0.02)}px)` }}
+              >
                 <div className="text-sm tracking-widest uppercase opacity-60 group-hover:opacity-100 transition-opacity mb-4">
                   {capability}
                 </div>
@@ -120,9 +121,14 @@ export default function Page() {
       </section>
 
       {/* Section 4: Industries */}
-      <section className="relative min-h-screen bg-black py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-black tracking-tight mb-20 uppercase">Industries</h2>
+          <h2 
+            style={{ transform: `translateY(${scrollY * 0.25}px)` }}
+            className="text-4xl font-black tracking-tight mb-20 uppercase transition-transform"
+          >
+            Industries
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {[
               { name: "Gaming", desc: "High-energy interactive experiences" },
@@ -142,12 +148,17 @@ export default function Page() {
       </section>
 
       {/* Section 5: Work */}
-      <section id="work" className="relative min-h-screen bg-black py-24 px-8">
+      <section className="relative z-20 min-h-screen bg-black/80 backdrop-blur-sm py-24 px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-black tracking-tight mb-20 uppercase">Selected Work</h2>
+          <h2 
+            style={{ transform: `translateY(${scrollY * 0.25}px)` }}
+            className="text-4xl font-black tracking-tight mb-20 uppercase transition-transform"
+          >
+            Selected Work
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="aspect-square bg-neutral-900 hover:bg-neutral-800 transition-colors cursor-pointer flex items-center justify-center group">
+              <div key={item} className="aspect-square bg-neutral-900/60 hover:bg-neutral-800 transition-colors cursor-pointer flex items-center justify-center group">
                 <div className="text-center">
                   <div className="text-5xl font-black opacity-20 group-hover:opacity-40 transition-opacity">
                     {item}
@@ -161,7 +172,7 @@ export default function Page() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="relative bg-black border-t border-neutral-800 py-16 px-8">
+      <footer className="relative z-20 bg-black/80 backdrop-blur-sm border-t border-neutral-800 py-16 px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div>
@@ -171,9 +182,9 @@ export default function Page() {
             <div>
               <p className="text-xs tracking-widest uppercase opacity-60 mb-4">Navigation</p>
               <div className="space-y-2 text-sm">
-                <a href="#work" className="block opacity-60 hover:opacity-100 transition-opacity">Work</a>
-                <a href="#studio" className="block opacity-60 hover:opacity-100 transition-opacity">Studio</a>
-                <a href="#journal" className="block opacity-60 hover:opacity-100 transition-opacity">Journal</a>
+                <a href="/work" className="block opacity-60 hover:opacity-100 transition-opacity">Work</a>
+                <a href="/studio" className="block opacity-60 hover:opacity-100 transition-opacity">Studio</a>
+                <a href="/journal" className="block opacity-60 hover:opacity-100 transition-opacity">Journal</a>
               </div>
             </div>
             <div>
