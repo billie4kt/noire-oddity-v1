@@ -1,11 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 100" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 72" role="img" aria-labelledby="title">
   <title id="title">NOIRE.</title>
-  <desc id="desc">Project Noire wordmark in Orbitron antimatrix style, with the middle bar removed from the E.</desc>
-  <g fill="#f5f5f5" font-family="Orbitron, Arial, sans-serif" font-size="72" font-weight="900" letter-spacing="4">
-    <text x="4" y="76">NOIR</text>
+  <g fill="none" stroke="#f4f1ea" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="bevel">
+    <path d="M8 58V14l34 44V14" />
+    <ellipse cx="78" cy="36" rx="18" ry="22" />
+    <path d="M118 14v44" />
+    <path d="M142 58V14h22l10 10v10l-10 10h-22m22-10 14 24" />
+    <path d="M224 14h48m-48 0v44m0-22h38m-38 22h48" />
   </g>
-  <g fill="none" stroke="#f5f5f5" stroke-linecap="square" stroke-width="9">
-    <path d="M310 22h58M310 22v54M310 76h58"/>
-  </g>
-  <circle cx="410" cy="76" r="5" fill="#f5f5f5"/>
+  <path d="M238 36h112" fill="none" stroke="#f4f1ea" stroke-width="4.5" stroke-linecap="square" />
+  <circle cx="378" cy="58" r="2.5" fill="#f4f1ea" />
 </svg>
