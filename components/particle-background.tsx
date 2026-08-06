@@ -14,13 +14,16 @@ export function ParticleBackground({
 }: ParticleBackgroundProps) {
   return (
     <div 
-      className={`absolute inset-0 z-0 ${className}`}
-      style={{ pointerEvents: pointerEvents ? 'auto' : 'none' }}
+      className={`fixed inset-0 z-0 ${className}`}
+      aria-hidden="true"
+      style={{ pointerEvents: 'none', touchAction: 'none' }}
     >
       <Canvas 
         camera={{ position: [0, 0, 5], fov: 45 }} 
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent' }}
+        dpr={[1, 1.5]}
+        frameloop="always"
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        style={{ background: 'transparent', pointerEvents: 'none', opacity: 0.34 }}
       >
         <StrangeAttractor />
       </Canvas>

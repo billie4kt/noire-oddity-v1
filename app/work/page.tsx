@@ -1,121 +1,43 @@
 "use client"
 
-import { ParticleBackground } from "@/components/particle-background"
 import { Navigation } from "@/components/navigation"
+import { ParticleBackground } from "@/components/particle-background"
 import { ProjectTile } from "@/components/project-tile"
-import { useState, useEffect } from "react"
+import { useCappedParallax } from "@/components/capped-parallax"
+import { projects } from "@/lib/projects"
 
 export default function WorkPage() {
-  const [scrollY, setScrollY] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  const heroOffset = useCappedParallax(24, 0.06)
 
   return (
-    <div className="w-full bg-black text-white overflow-x-hidden">
-      {/* Fixed Particle Background */}
+    <main className="relative min-h-screen overflow-x-clip bg-black text-white">
       <ParticleBackground />
-      
-      {/* Navigation */}
       <Navigation />
-
-      {/* Hero Section */}
-      <section className="relative z-10 w-full h-screen flex items-center justify-center bg-black/15">
-        <div className="text-center max-w-4xl mx-auto px-6 mt-20">
-          <h1 
-            style={{ transform: `translateY(${scrollY * 0.5}px)` }}
-            className="text-7xl md:text-8xl font-black tracking-[0.3em] mb-8 transition-transform"
-          >
-            Work
-          </h1>
-          <p 
-            style={{ transform: `translateY(${scrollY * -0.3}px)` }}
-            className="text-lg md:text-xl tracking-wide text-neutral-400 transition-transform"
-          >
-            Selected projects crafted with precision and vision
-          </p>
+      <section className="relative z-10 flex min-h-[72svh] items-end bg-black/40 px-4 pb-16 pt-32 backdrop-blur-sm sm:px-8 sm:pb-24">
+        <div className="mx-auto w-full max-w-6xl" style={{ transform: `translate3d(0, ${heroOffset}px, 0)` }}>
+          <p className="mb-5 text-xs uppercase tracking-[0.24em] text-white/55">Project Noire / Selected work</p>
+          <h1 className="max-w-4xl text-balance text-5xl font-black leading-[0.95] tracking-[-0.05em] sm:text-7xl lg:text-9xl">Projects made to stay with you.</h1>
         </div>
       </section>
-
-      {/* Projects Grid */}
-      <section className="relative z-20 bg-black/45 backdrop-blur-3xl py-24 px-8 min-h-screen">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {[
-              {
-                title: "Quantum Interface",
-                category: "Digital Product",
-                description: "Revolutionary platform for real-time data visualization",
-                image: "/projects/quantum-interface.png"
-              },
-              {
-                title: "Luminescence",
-                category: "Brand Identity",
-                description: "Luxury fashion brand identity system with dynamic visuals",
-                image: "/projects/luminescence.png"
-              },
-              {
-                title: "Nexus Protocol",
-                category: "Interactive Experience",
-                description: "Immersive 3D environment for architectural visualization",
-                image: "/projects/nexus-protocol.png"
-              },
-              {
-                title: "Chromatic Motion",
-                category: "Motion Design",
-                description: "Award-winning animation system for streaming platform",
-                image: "/projects/chromatic-motion.png"
-              },
-              {
-                title: "Neural Systems",
-                category: "AI Integration",
-                description: "Intelligent design system powered by generative models",
-                image: "/projects/neural-systems.png"
-              },
-              {
-                title: "Zenith Campaign",
-                category: "Digital Campaign",
-                description: "Immersive brand campaign for luxury automotive client",
-                image: "/projects/zenith-campaign.png"
-              }
-            ].map((project, idx) => (
-              <ProjectTile
-                key={idx}
-                title={project.title}
-                category={project.category}
-                description={project.description}
-                image={project.image}
-              />
-            ))}
+      <section className="relative z-10 border-t border-white/15 bg-black/45 px-4 py-16 backdrop-blur-3xl sm:px-8 sm:py-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 flex items-end justify-between gap-6">
+            <p className="max-w-md text-pretty text-base leading-7 text-white/60">A selection of identities, interfaces, and worlds built for culture-forward organizations.</p>
+            <span className="hidden text-xs uppercase tracking-[0.2em] text-white/40 sm:block">06 projects</span>
+          </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-8">
+            {projects.map((project) => <ProjectTile key={project.slug} {...project} />)}
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="relative z-20 bg-black/35 backdrop-blur-2xl py-24 px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl font-black tracking-tight mb-8">Start Your Project</h2>
-          <p className="text-lg text-neutral-400 mb-12 max-w-2xl mx-auto">
-            Let&apos;s collaborate on something extraordinary. Every project begins with a conversation.
-          </p>
-          <a 
-            href="/contact" 
-            className="inline-block px-8 py-4 border-2 border-white hover:bg-white hover:text-black transition-all duration-300 font-black tracking-wide uppercase text-sm"
-          >
-            Get in Touch
-          </a>
-        </div>
+      <section className="relative z-10 border-t border-white/15 bg-black/35 px-4 py-20 text-center backdrop-blur-2xl sm:px-8 sm:py-28">
+        <h2 className="text-balance text-4xl font-black tracking-tight sm:text-6xl">Start your project.</h2>
+        <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-7 text-white/60">Let&apos;s collaborate on something extraordinary. Every project begins with a conversation.</p>
+        <a href="/contact" className="mt-9 inline-block border-2 border-white px-7 py-4 text-xs font-black uppercase tracking-[0.18em] transition-colors hover:bg-white hover:text-black">Get in touch</a>
       </section>
-
-      {/* Footer */}
-      <footer className="relative z-20 bg-black/85 backdrop-blur-sm border-t border-neutral-800 py-12 px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-xs text-neutral-600 tracking-widest">© 2024 NOIRE. All rights reserved.</p>
-        </div>
+      <footer className="relative z-10 border-t border-white/15 bg-black/85 px-4 py-12 sm:px-8">
+        <div className="mx-auto max-w-6xl text-xs tracking-[0.18em] text-white/40">© 2026 Project Noire. All rights reserved.</div>
       </footer>
-    </div>
+    </main>
   )
 }

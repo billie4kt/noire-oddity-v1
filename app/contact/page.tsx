@@ -14,7 +14,7 @@ export default function ContactPage() {
   })
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
+    const handleScroll = () => setScrollY(Math.min(48, window.scrollY))
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -45,7 +45,7 @@ export default function ContactPage() {
         <div className="text-center max-w-4xl mx-auto px-6 mt-20">
           <h1 
             style={{ transform: `translateY(${scrollY * 0.5}px)` }}
-            className="text-7xl md:text-8xl font-black tracking-[0.3em] mb-8 transition-transform"
+            className="text-5xl sm:text-7xl md:text-8xl font-black tracking-[0.18em] sm:tracking-[0.3em] mb-8 transition-transform"
           >
             Contact
           </h1>
@@ -216,7 +216,7 @@ export default function ContactPage() {
       {/* Footer */}
       <footer className="relative z-20 bg-black/85 backdrop-blur-sm border-t border-neutral-800 py-12 px-8">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-xs text-neutral-600 tracking-widest">© 2024 NOIRE. All rights reserved.</p>
+          <p className="text-xs text-neutral-600 tracking-widest">© 2024 Project Noire. All rights reserved.</p>
         </div>
       </footer>
     </div>

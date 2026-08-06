@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useMemo, useState } from "react"
+import { useRef, useMemo, useEffect } from "react"
 import { useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
@@ -41,15 +41,39 @@ function generateLorenzAttractor(numPoints: number) {
 export function StrangeAttractor() {
   const pointsRef = useRef<THREE.Points>(null)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
-  const [mouse3D, setMouse3D] = useState(new THREE.Vector3(0, 0, -10))
+  const mouseTarget = useRef(new THREE.Vector3(0, 0, 0))
+  const mouseCurrent = useRef(new THREE.Vector3(0, 0, 0))
   const { camera } = useThree()
 
-  const { positions, count } = useMemo(() => {
-    const positions = generateLorenzAttractor(100000)
-    const count = positions.length / 3
+  useEffect(() => {
+    const raycaster = new THREE.Raycaster()
+    const screen = new THREE.Vector2()
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0)
+    const point = new THREE.Vector3()
 
-    return { positions, count }
-  }, [])
+    const updatePointer = (clientX: number, clientY: number) => {
+      screen.x = (clientX / window.innerWidth) * 2 - 1
+      screen.y = -(clientY / window.innerHeight) * 2 + 1
+      raycaster.setFromCamera(screen, camera)
+      if (raycaster.ray.intersectPlane(plane, point)) {
+        mouseTarget.current.copy(point)
+      }
+    }
+
+    const handlePointerMove = (event: PointerEvent) => {
+      updatePointer(event.clientX, event.clientY)
+    }
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true })
+    window.addEventListener("pointerdown", handlePointerMove, { passive: true })
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove)
+      window.removeEventListener("pointerdown", handlePointerMove)
+    }
+  }, [camera])
+
+  const positions = useMemo(() => generateLorenzAttractor(65000), [])
 
   // Custom shader material
   const shaderMaterial = useMemo(
@@ -57,7 +81,7 @@ export function StrangeAttractor() {
       new THREE.ShaderMaterial({
         uniforms: {
           uTime: { value: 0 },
-          uMouse: { value: new THREE.Vector3(0, 0, -10) },
+          uMouse: { value: new THREE.Vector3(0, 0, 0) },
           uMagnetStrength: { value: 0.9 },
           uCameraPosition: { value: new THREE.Vector3(0, 0, 5) },
         },
@@ -216,40 +240,22 @@ export function StrangeAttractor() {
     [],
   )
 
-  const handlePointerMove = (event: any) => {
-    if (!pointsRef.current) return
-
-    const raycaster = new THREE.Raycaster()
-    raycaster.setFromCamera(event.pointer, camera)
-
-    const planeZ = pointsRef.current.position.z
-    const planeNormal = new THREE.Vector3(0, 0, 1)
-    const planePoint = new THREE.Vector3(0, 0, planeZ)
-    const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(planeNormal, planePoint)
-
-    const intersectPoint = new THREE.Vector3()
-    raycaster.ray.intersectPlane(plane, intersectPoint)
-
-    if (intersectPoint) {
-      setMouse3D(intersectPoint)
-    }
-  }
-
   useFrame((state) => {
     if (pointsRef.current && materialRef.current) {
-      pointsRef.current.rotation.y += 0.001
-      pointsRef.current.rotation.x += 0.0003
+      pointsRef.current.rotation.y += 0.0007
+      pointsRef.current.rotation.x += 0.0002
 
+      mouseCurrent.current.lerp(mouseTarget.current, 0.12)
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime
-      materialRef.current.uniforms.uMouse.value.copy(mouse3D)
+      materialRef.current.uniforms.uMouse.value.copy(mouseCurrent.current)
       materialRef.current.uniforms.uCameraPosition.value.copy(state.camera.position)
     }
   })
 
   return (
-    <points ref={pointsRef} onPointerMove={handlePointerMove}>
+    <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <primitive object={shaderMaterial} ref={materialRef} attach="material" />
     </points>

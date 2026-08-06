@@ -10,7 +10,7 @@ import { Orbitron } from 'next/font/google'
 const _orbitron = Orbitron({ subsets: ['latin'], weight: ["400", "700", "900"] })
 
 export const metadata: Metadata = {
-  title: "NOIRE | Creative Systems for Culture",
+  title: "Project Noire | Creative Systems for Culture",
   description: "Luxury creative studio crafting memorable digital experiences through design, motion, and innovation.",
   generator: "v0.app",
   icons: {
