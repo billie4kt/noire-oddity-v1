@@ -11,7 +11,7 @@ export function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between gap-2 px-3 py-5 sm:gap-4 sm:px-8 sm:py-6 bg-black/50 backdrop-blur-sm">
-      <Link href="/" aria-label="Project Noire home" className="shrink-0 transition-opacity hover:opacity-80">
+      <Link href="/" aria-label="NOIRE. — Project Noire home" className="shrink-0 transition-opacity hover:opacity-80">
         <Image
           src="/noire-mark.svg"
           alt="NOIRE."

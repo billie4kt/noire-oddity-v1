@@ -15,10 +15,10 @@ export const metadata: Metadata = {
   generator: "v0.app",
   icons: {
     icon: {
-      url: "/noire-mark.svg",
+      url: "/icon.svg",
       type: "image/svg+xml",
     },
-    apple: "/apple-icon.png",
+    apple: "/icon.svg",
   },
 }
 
