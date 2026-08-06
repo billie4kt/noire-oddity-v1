@@ -15,7 +15,7 @@ export default function Page() {
   }, [])
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
+    const handleScroll = () => setScrollY(Math.min(48, window.scrollY))
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -38,7 +38,7 @@ export default function Page() {
               style={{ transform: `translateY(${scrollY * 0.5}px)` }}
             >
               <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-[0.18em] sm:tracking-[0.3em] mb-8">
-                NOIRE
+                Project Noire
               </h1>
               <p className="text-lg md:text-xl tracking-wide text-neutral-400 mb-2">
                 Creative Systems for Culture
@@ -73,7 +73,7 @@ export default function Page() {
               className="text-neutral-400 space-y-6 text-lg leading-relaxed transition-transform"
             >
               <p>
-                At NOIRE, we believe the most powerful design isn&apos;t just seen—it&apos;s felt. 
+                At Project Noire, we believe the most powerful design isn&apos;t just seen—it&apos;s felt. 
                 Every project we create emerges from a deep understanding of culture, motion, and 
                 the spaces between intention and perception.
               </p>
@@ -160,24 +160,28 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {[
               {
+                slug: "quantum-interface",
                 title: "Quantum Interface",
                 category: "Digital Product",
                 description: "Revolutionary platform for real-time data visualization",
                 image: "/projects/quantum-interface.png"
               },
               {
+                slug: "luminescence",
                 title: "Luminescence",
                 category: "Brand Identity",
                 description: "Luxury fashion identity system with dynamic visuals",
                 image: "/projects/luminescence.png"
               },
               {
+                slug: "nexus-protocol",
                 title: "Nexus Protocol",
                 category: "Interactive Experience",
                 description: "Immersive 3D environment for architectural viz",
                 image: "/projects/nexus-protocol.png"
               },
               {
+                slug: "chromatic-motion",
                 title: "Chromatic Motion",
                 category: "Motion Design",
                 description: "Award-winning animation for streaming platform",
@@ -186,6 +190,7 @@ export default function Page() {
             ].map((project, idx) => (
               <ProjectTile
                 key={idx}
+                slug={project.slug}
                 title={project.title}
                 category={project.category}
                 description={project.description}
@@ -201,7 +206,7 @@ export default function Page() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div>
-              <h3 className="font-black tracking-wide mb-4">NOIRE</h3>
+              <h3 className="font-black tracking-wide mb-4">Project Noire</h3>
               <p className="text-neutral-500 text-sm">Creative Systems for Culture</p>
             </div>
             <div>
@@ -228,7 +233,7 @@ export default function Page() {
             </div>
           </div>
           <div className="border-t border-neutral-800 pt-8 text-center">
-            <p className="text-xs text-neutral-600 tracking-widest">© 2024 NOIRE. All rights reserved.</p>
+            <p className="text-xs text-neutral-600 tracking-widest">© 2024 Project Noire. All rights reserved.</p>
           </div>
         </div>
       </footer>

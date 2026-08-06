@@ -11,7 +11,7 @@ export function Navigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between gap-2 px-3 py-5 sm:gap-4 sm:px-8 sm:py-6 bg-black/50 backdrop-blur-sm">
       <Link href="/" className="text-lg font-bold tracking-widest hover:opacity-80 transition-opacity">
-        NOIRE
+        Project Noire
       </Link>
       <div className="flex shrink-0 gap-2 text-[10px] tracking-wide sm:gap-8 sm:text-sm">
         <Link 

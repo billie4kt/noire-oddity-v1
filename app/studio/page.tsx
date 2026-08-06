@@ -8,7 +8,7 @@ export default function StudioPage() {
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
+    const handleScroll = () => setScrollY(Math.min(48, window.scrollY))
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -54,7 +54,7 @@ export default function StudioPage() {
               className="space-y-6 text-lg text-neutral-400 leading-relaxed transition-transform"
             >
               <p>
-                Founded on the belief that design is a language, NOIRE creates work that speaks to the untold stories of our era. We don&apos;t just design—we architect experiences that challenge perception and inspire action.
+                Founded on the belief that design is a language, Project Noire creates work that speaks to the untold stories of our era. We don&apos;t just design—we architect experiences that challenge perception and inspire action.
               </p>
               <p>
                 Our studio brings together specialists from around the world: animators, developers, strategists, and dreamers. Each project is a collaboration that pushes the boundaries of what&apos;s possible in digital space.
@@ -161,7 +161,7 @@ export default function StudioPage() {
       {/* Footer */}
       <footer className="relative z-20 bg-black/85 backdrop-blur-sm border-t border-neutral-800 py-12 px-8">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-xs text-neutral-600 tracking-widest">© 2024 NOIRE. All rights reserved.</p>
+          <p className="text-xs text-neutral-600 tracking-widest">© 2024 Project Noire. All rights reserved.</p>
         </div>
       </footer>
     </div>
