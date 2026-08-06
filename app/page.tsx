@@ -37,7 +37,7 @@ export default function Page() {
               className="mb-12 animate-in fade-in duration-1000"
               style={{ transform: `translateY(${scrollY * 0.5}px)` }}
             >
-              <h1 className="text-7xl md:text-8xl font-black tracking-[0.3em] mb-8">
+              <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-[0.18em] sm:tracking-[0.3em] mb-8">
                 NOIRE
               </h1>
               <p className="text-lg md:text-xl tracking-wide text-neutral-400 mb-2">

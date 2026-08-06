@@ -45,7 +45,7 @@ export default function ContactPage() {
         <div className="text-center max-w-4xl mx-auto px-6 mt-20">
           <h1 
             style={{ transform: `translateY(${scrollY * 0.5}px)` }}
-            className="text-7xl md:text-8xl font-black tracking-[0.3em] mb-8 transition-transform"
+            className="text-5xl sm:text-7xl md:text-8xl font-black tracking-[0.18em] sm:tracking-[0.3em] mb-8 transition-transform"
           >
             Contact
           </h1>
