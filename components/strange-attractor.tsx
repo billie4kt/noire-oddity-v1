@@ -73,12 +73,7 @@ export function StrangeAttractor() {
     }
   }, [camera])
 
-  const { positions, count } = useMemo(() => {
-    const positions = generateLorenzAttractor(65000)
-    const count = positions.length / 3
-
-    return { positions, count }
-  }, [])
+  const positions = useMemo(() => generateLorenzAttractor(65000), [])
 
   // Custom shader material
   const shaderMaterial = useMemo(
@@ -260,7 +255,7 @@ export function StrangeAttractor() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <primitive object={shaderMaterial} ref={materialRef} attach="material" />
     </points>
