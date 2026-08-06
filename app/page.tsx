@@ -8,6 +8,7 @@ import { useState, useEffect } from "react"
 export default function Page() {
   const [showLogo, setShowLogo] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [pointer, setPointer] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const timer = setTimeout(() => setShowLogo(true), 1500)
@@ -16,9 +17,22 @@ export default function Page() {
 
   useEffect(() => {
     const handleScroll = () => setScrollY(Math.min(48, window.scrollY))
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    const handlePointerMove = (event: PointerEvent) => {
+      setPointer({
+        x: (event.clientX / window.innerWidth - 0.5) * 2,
+        y: (event.clientY / window.innerHeight - 0.5) * 2,
+      })
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("pointermove", handlePointerMove, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("pointermove", handlePointerMove)
+    }
   }, [])
+
+  const titleTransform = `translate3d(${pointer.x * 10}px, ${scrollY * 0.5 + pointer.y * 7}px, 0) rotateX(${pointer.y * -1.5}deg) rotateY(${pointer.x * 2}deg)`
 
   return (
     <div className="w-full bg-black text-white overflow-x-hidden">
@@ -35,10 +49,14 @@ export default function Page() {
           {showLogo && (
             <div 
               className="mb-12 animate-in fade-in duration-1000"
-              style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+              style={{
+                transform: titleTransform,
+                transformStyle: "preserve-3d",
+                transition: "transform 120ms cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
             >
-              <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-[0.18em] sm:tracking-[0.3em] mb-8">
-                Project Noire
+              <h1 className="font-sans text-4xl font-black uppercase tracking-[0.16em] text-white [text-shadow:0_0_28px_rgba(255,255,255,0.16)] sm:text-6xl sm:tracking-[0.24em] md:text-8xl">
+                PROJECT NOIRE
               </h1>
               <p className="text-lg md:text-xl tracking-wide text-neutral-400 mb-2">
                 Creative Systems for Culture

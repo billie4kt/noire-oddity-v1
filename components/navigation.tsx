@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -10,8 +11,18 @@ export function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between gap-2 px-3 py-5 sm:gap-4 sm:px-8 sm:py-6 bg-black/50 backdrop-blur-sm">
-      <Link href="/" className="text-lg font-bold tracking-widest hover:opacity-80 transition-opacity">
-        Project Noire
+      <Link href="/" aria-label="NOIRE. — Project Noire home" className="flex shrink-0 items-center gap-2 transition-opacity hover:opacity-80">
+        <Image
+          src="/icon.svg"
+          alt=""
+          width={18}
+          height={18}
+          priority
+          className="h-[18px] w-[18px]"
+        />
+        <span className="font-sans text-[13px] font-bold uppercase tracking-[0.28em] text-white sm:text-[15px]">
+          NOIRE<span className="tracking-[0.1em]">.</span>
+        </span>
       </Link>
       <div className="flex shrink-0 gap-2 text-[10px] tracking-wide sm:gap-8 sm:text-sm">
         <Link 

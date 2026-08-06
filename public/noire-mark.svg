@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 72" role="img" aria-labelledby="title">
+  <title id="title">NOIRE.</title>
+  <g fill="none" stroke="#f4f1ea" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="bevel">
+    <path d="M8 58V14l34 44V14" />
+    <ellipse cx="78" cy="36" rx="18" ry="22" />
+    <path d="M118 14v44" />
+    <path d="M142 58V14h22l10 10v10l-10 10h-22m22-10 14 24" />
+    <path d="M224 14h48m-48 0v44m0-22h38m-38 22h48" />
+  </g>
+  <path d="M238 36h112" fill="none" stroke="#f4f1ea" stroke-width="4.5" stroke-linecap="square" />
+  <circle cx="378" cy="58" r="2.5" fill="#f4f1ea" />
+</svg>
