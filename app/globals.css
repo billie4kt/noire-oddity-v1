@@ -1,5 +1,30 @@
 @import 'tailwindcss';
 
+.project-noire-title {
+  position: relative;
+  display: inline-block;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.85);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.16), 3px 3px 0 rgba(255, 255, 255, 0.08);
+  animation: noire-sculpted-breathe 4.8s ease-in-out infinite;
+}
+
+.project-noire-title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.24);
+  transform: translate(3px, 3px);
+  pointer-events: none;
+}
+
+@keyframes noire-sculpted-breathe {
+  0%, 100% { filter: brightness(0.95); }
+  50% { filter: brightness(1.18); }
+}
+
 :root {
   --background: #000000;
   --foreground: #ffffff;

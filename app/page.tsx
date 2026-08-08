@@ -32,7 +32,7 @@ export default function Page() {
     }
   }, [])
 
-  const titleTransform = `translate3d(${pointer.x * 10}px, ${scrollY * 0.5 + pointer.y * 7}px, 0) rotateX(${pointer.y * -1.5}deg) rotateY(${pointer.x * 2}deg)`
+  const titleTransform = `translate3d(${pointer.x * 18}px, ${scrollY * 0.5 + pointer.y * 12}px, 0) rotateX(${pointer.y * -3}deg) rotateY(${pointer.x * 5}deg) skewX(${pointer.x * 0.8}deg)`
 
   return (
     <div className="w-full bg-black text-white overflow-x-hidden">
@@ -55,7 +55,10 @@ export default function Page() {
                 transition: "transform 120ms cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             >
-              <h1 className="font-sans text-4xl font-black uppercase tracking-[0.16em] text-white [text-shadow:0_0_28px_rgba(255,255,255,0.16)] sm:text-6xl sm:tracking-[0.24em] md:text-8xl">
+              <h1
+                className="project-noire-title font-mono text-4xl font-black uppercase tracking-[0.16em] text-white sm:text-6xl sm:tracking-[0.24em] md:text-8xl"
+                data-text="PROJECT NOIRE"
+              >
                 PROJECT NOIRE
               </h1>
               <p className="text-lg md:text-xl tracking-wide text-neutral-400 mb-2">
