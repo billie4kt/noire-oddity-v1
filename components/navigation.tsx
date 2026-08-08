@@ -13,12 +13,12 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between gap-2 px-3 py-5 sm:gap-4 sm:px-8 sm:py-6 bg-black/50 backdrop-blur-sm">
       <Link href="/" aria-label="NOIRE. — Project Noire home" className="flex shrink-0 items-center gap-2 transition-opacity hover:opacity-80">
         <Image
-          src="/noire-mark.svg"
+          src="/noire-bg.png"
           alt="NOIRE."
-          width={138}
-          height={28}
+          width={1120}
+          height={275}
           priority
-          className="h-auto w-[108px] sm:w-[138px]"
+          className="h-auto w-[118px] object-contain sm:w-[148px]"
         />
       </Link>
       <div className="flex shrink-0 gap-2 text-[10px] tracking-wide sm:gap-8 sm:text-sm">

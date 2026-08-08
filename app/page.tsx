@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { ParticleBackground } from "@/components/particle-background"
 import { Navigation } from "@/components/navigation"
 import { ProjectTile } from "@/components/project-tile"
@@ -55,12 +56,14 @@ export default function Page() {
                 transition: "transform 120ms cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             >
-              <h1
-                className="project-noire-title font-mono text-4xl font-black uppercase tracking-[0.16em] text-white sm:text-6xl sm:tracking-[0.24em] md:text-8xl"
-                data-text="PROJECT NOIRE"
-              >
-                PROJECT NOIRE
-              </h1>
+              <Image
+                src="/project-noire-bg.png"
+                alt="Project Noire"
+                width={1120}
+                height={275}
+                priority
+                className="project-noire-title h-auto w-[min(88vw,700px)] object-contain drop-shadow-[0_0_28px_rgba(255,255,255,0.14)] sm:w-[min(82vw,820px)] md:w-[min(78vw,1120px)]"
+              />
               <p className="text-lg md:text-xl tracking-wide text-neutral-400 mb-2">
                 Creative Systems for Culture
               </p>
