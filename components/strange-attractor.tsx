@@ -173,7 +173,7 @@ export function StrangeAttractor() {
             gl_Position = projectionMatrix * mvPosition;
             
             float depthSize = smoothstep(12.0, 4.0, depthFromCamera);
-            gl_PointSize = 0.5 + depthSize * 1.5 + magneticInfluence * 0.5;
+            gl_PointSize = 0.75 + depthSize * 2.2 + magneticInfluence * 0.9;
           }
         `,
         fragmentShader: `
@@ -220,7 +220,7 @@ export function StrangeAttractor() {
             float alpha = smoothstep(0.0, 0.8, vDistanceFromCenter);
             alpha = mix(alpha, 1.0, vMouseInfluence * 0.4);
             
-            alpha *= depthFade * 0.4 + 0.15;
+            alpha *= depthFade * 0.62 + 0.24;
             
             vec3 iridescent = getIridescentColor(vWorldPosition, vNormal, uTime);
             

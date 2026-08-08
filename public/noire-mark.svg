@@ -1,12 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 72" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 90" role="img" aria-labelledby="title desc">
   <title id="title">NOIRE.</title>
-  <g fill="none" stroke="#f4f1ea" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="bevel">
-    <path d="M8 58V14l34 44V14" />
-    <ellipse cx="78" cy="36" rx="18" ry="22" />
-    <path d="M118 14v44" />
-    <path d="M142 58V14h22l10 10v10l-10 10h-22m22-10 14 24" />
-    <path d="M224 14h48m-48 0v44m0-22h38m-38 22h48" />
+  <desc id="desc">A sculpted geometric NOIRE wordmark with a missing middle E bar and terminal period.</desc>
+  <g fill="none" stroke="#f4f1ea" stroke-width="10" stroke-linecap="square" stroke-linejoin="bevel">
+    <path d="M10 78V12l48 66V12"/>
+    <path d="M82 12h48l-10 10H94v18h27l-9 10H94v18h37"/>
+    <path d="M152 78V12h26c17 0 25 8 25 20 0 10-6 17-16 20l25 26"/>
+    <path d="M164 22v21h13c9 0 14-4 14-11s-5-10-14-10z"/>
+    <path d="M224 78V12l47 66V12"/>
+    <path d="M303 12h48l-10 10h-26v18h27l-9 10h-18v18h37"/>
+    <path d="M377 78V12h30c13 0 22 7 22 18 0 9-6 16-16 19l25 29"/>
+    <path d="M389 22v20h16c8 0 12-4 12-10s-4-10-12-10z"/>
   </g>
-  <path d="M238 36h112" fill="none" stroke="#f4f1ea" stroke-width="4.5" stroke-linecap="square" />
-  <circle cx="378" cy="58" r="2.5" fill="#f4f1ea" />
+  <path d="M103 45h112" fill="none" stroke="#f4f1ea" stroke-width="10" stroke-linecap="square" stroke-linejoin="bevel"/>
+  <circle cx="449" cy="78" r="5" fill="#f4f1ea"/>
 </svg>

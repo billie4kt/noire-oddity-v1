@@ -23,7 +23,7 @@ export function ParticleBackground({
         dpr={[1, 1.5]}
         frameloop="always"
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        style={{ background: 'transparent', pointerEvents: 'none', opacity: 0.34 }}
+        style={{ background: 'transparent', pointerEvents: 'none', opacity: 0.42 }}
       >
         <StrangeAttractor />
       </Canvas>
